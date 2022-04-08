@@ -4,13 +4,17 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplist38.databinding.ActivitySecondBinding
 import com.example.shoplistapp38.presentation.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 class SecondActivity : AppCompatActivity() {
@@ -28,16 +32,22 @@ class SecondActivity : AppCompatActivity() {
 
     }
 
+
     private fun initListeners() {
+        myAdapter.onLongItemCLick={pos->
+            Toast.makeText(this, "$pos", Toast.LENGTH_SHORT).show()
+        }
         myAdapter.onItemCLick = {
             viewModel.changeEnableState(it)
+            Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()
+
         }
             
     }
 
     private fun initObservers() {
         viewModel.shopListLD.observe(this){
-            myAdapter.shopList = it
+            myAdapter.submitList(it)
         }
     }
 
@@ -87,8 +97,11 @@ class SecondActivity : AppCompatActivity() {
         dialog.setTitle("Delete Task")
         dialog.setMessage("Are you sure you want to delete this Task?")
         dialog.setPositiveButton("Confirm") { _, _ ->    //   <-- delete task on swipe
-            val item = myAdapter.shopList[viewHolder.absoluteAdapterPosition]
-            viewModel.deleteShopItem(item)
+            val item = myAdapter.currentList[viewHolder.absoluteAdapterPosition]
+            lifecycleScope.launch {
+                viewModel.deleteShopItem(item)
+            }
+
         }
         dialog.setNegativeButton("Cancel"
         ) { _, _ -> myAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition) }

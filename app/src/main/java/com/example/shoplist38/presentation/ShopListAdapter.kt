@@ -5,27 +5,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplist38.R
 import com.example.shoplistapp38.domain.entities.ShopItem
 import java.lang.RuntimeException
 
 
-class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
+class ShopListAdapter: ListAdapter<ShopItem,ShopListAdapter.ShopItemViewHolder>(ShopListItemDiffCallback()) {
 
     var onItemCLick :((ShopItem)->Unit)? = null
-    var shopList = listOf<ShopItem>()
+    var onLongItemCLick :((Int)->Unit)? = null
+  //  var shopList = listOf<ShopItem>()
 
-    set(value){
-        val callback = ShopListDiffCallback(shopList,value)
-        val diffResult = DiffUtil.calculateDiff(callback)
-        diffResult.dispatchUpdatesTo(this)
-        field =value
 
-    }
 
     override fun getItemViewType(position: Int): Int {
-        val item = shopList[position]
+        val item = getItem(position)
         return  if (item.enabled){
             VIEW_TYPE_ENABLED
         }else{
@@ -46,11 +42,10 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     }
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
-        holder.onBind(shopList[position])
+        holder.onBind(getItem(position))
 
     }
 
-    override fun getItemCount() = shopList.size
 
 
     inner class ShopItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
@@ -63,6 +58,10 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
             productName.text = shopItem.name
             counter.text = shopItem.count.toString()
 
+            itemView.setOnLongClickListener {
+                onLongItemCLick?.invoke(position)
+              return@setOnLongClickListener true
+            }
             itemView.setOnClickListener {
                 onItemCLick?.invoke(shopItem)
             }
