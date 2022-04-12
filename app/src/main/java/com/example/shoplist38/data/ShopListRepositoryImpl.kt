@@ -1,7 +1,6 @@
 package com.example.shoplist38.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.shoplist38.App
 import com.example.shoplist38.data.Room.ShopListMapper
@@ -18,7 +17,7 @@ class ShopListRepositoryImpl() :ShopListRepository {
 
      init {
         for(i in 0 until 50){
-            val item = ShopItem("Banana:$i",i, Random.nextBoolean())
+            val item = ShopItem("Banana",i, Random.nextBoolean())
             dao.addShopItem(mapper.mapEntityToDBModel(item))
         }
     }
@@ -37,8 +36,7 @@ class ShopListRepositoryImpl() :ShopListRepository {
         dao.editShopItem(mapper.mapEntityToDBModel(shopItem))
     }
 
-
-    override suspend fun getShopItem(shopItemID: Int): ShopItem {
+    override suspend fun getShopItemByID(shopItemID: Int): ShopItem {
         return mapper.mapDBModelToEntity(dao.getShopItem(shopItemID))
 
     }
@@ -49,5 +47,7 @@ class ShopListRepositoryImpl() :ShopListRepository {
     ){
         mapper.mapListDBModeltoListentity(it)
     }
+
+
 
 }

@@ -13,8 +13,9 @@ interface ShopListRepository  {
     suspend fun deleteShopItem(shopItem: ShopItem)
 
     fun editShopItem(shopItem: ShopItem)
+    suspend fun getShopItemByID(shopItemID: Int):ShopItem
 
     fun getShopList(): LiveData<List<ShopItem>>
 
-    suspend fun getShopItem(shopItemID: Int): ShopItem
+
 }

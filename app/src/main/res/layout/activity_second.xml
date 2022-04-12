@@ -6,11 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".presentation.SecondActivity">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_shop_enabled"
         android:id="@+id/mainRV"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

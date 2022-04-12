@@ -9,6 +9,8 @@ import com.example.shoplistapp38.domain.entities.ShopItemDBModel
 @Dao
 interface ShopDao {
 
+
+
     @Query("SELECT * FROM shop_dataDB")
      fun getShopList(): LiveData<List<ShopItemDBModel>>
 
@@ -21,6 +23,7 @@ interface ShopDao {
 
     @Query("SELECT * FROM shop_dataDB WHERE id=:shopItemId LIMIT 1")
      suspend fun getShopItem(shopItemId: Int): ShopItemDBModel
+
 
      @Update
      fun editShopItem(shopItemDbModel: ShopItemDBModel)

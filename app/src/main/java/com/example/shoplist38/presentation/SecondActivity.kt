@@ -1,9 +1,14 @@
 package com.example.shoplist38.presentation
 
+import android.app.SearchManager
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -11,13 +16,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shoplist38.R
 import com.example.shoplist38.databinding.ActivitySecondBinding
+import com.example.shoplistapp38.domain.entities.ShopItem
 import com.example.shoplistapp38.presentation.MainViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
 class SecondActivity : AppCompatActivity() {
+
 
     private var myAdapter = ShopListAdapter()
     private val viewModel:MainViewModel by viewModels()
@@ -31,6 +38,41 @@ class SecondActivity : AppCompatActivity() {
         initListeners()
 
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu,menu)
+        val searchItem: MenuItem? = menu!!.findItem(R.id.search_bar)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView: SearchView = searchItem?.actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = "Type id :"
+        searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                lifecycleScope.launch {
+                    if (query != null) {
+                        Toast.makeText(this@SecondActivity, "Name:" +
+                                viewModel.getShopItem(query.toInt()).name
+                                +"id:" +viewModel.getShopItem(query.toInt()).id, Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this@SecondActivity, "null", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                return true
+            }
+
+            override  fun onQueryTextChange(query: String?): Boolean {
+                return false
+            }
+
+        })
+
+        return super.onCreateOptionsMenu(menu)
+
+    }
+
 
 
     private fun initListeners() {

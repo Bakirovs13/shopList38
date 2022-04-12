@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_baseline_search.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/activity_second.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/item_shop.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/item_shop_disabled.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_shop_enabled.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_shop_isEnabled.xml" value="0.23369565217391305" />
+        <entry key="app/src/main/res/menu/menu.xml" value="0.19310344827586207" />
       </map>
     </option>
   </component>
